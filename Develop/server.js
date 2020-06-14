@@ -19,19 +19,19 @@ app.get("/notes", function(req, res) {
 });
 
 app.get("/*", function(req, res) {
-    res.sendFile(path.join(__dirname, "index.html"));
+    res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 app.get("/api/notes", function(req, res) {
-    res.sendFile(path.join(__dirname, "db.json"));
+    res.sendFile(path.join(__dirname, "./db/db.json"));
 });
 
 app.post("/api/notes", function(req, res) {
-    res.sendFile(path.join(__dirname, "db.json"));
+    res.sendFile(path.join(__dirname, "./db/db.json"));
 });
 
 app.delete("/api/notes/:id", function(reg,res) {
-    res.sendFile(path.join(__dirname, "db.json"));
+    res.sendFile(path.join(__dirname, "./db/db.json"));
 });
 
 // Starts the server to begin listening
