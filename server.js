@@ -20,12 +20,12 @@ app.use(express.static(path.join(__dirname, "Develop/public")));
 
 let noteDump = [];
 
+// api call for all notes in the db.json file and sends the results as an array of objects.
 
 app.get("/api/notes", function(req, res) {
     
     try{
         noteDump = fs.readFileSync("./develop/db/db.json", 'utf8');
-        console.log("IT WORKED!")
         noteDump = JSON.parse(noteDump);
     }
 
@@ -37,11 +37,49 @@ app.get("/api/notes", function(req, res) {
 });
 
 app.post("/api/notes", function(req, res) {
-    res.sendFile(path.join(__dirname, "./develop/db/db.json"));
+    try {
+        notesDump = fs.readFileSync("./develop/db/db.json", "utf8");  
+
+        notesDump = JSON.parse(notesDump);
+
+        req.body.id = notesDump.length;
+
+        notesDump.push(req.body); 
+
+        notesDump = JSON.stringify(notesDump);
+
+        fs.writeFile("./develop/db/db.json", notesDump, "utf8", function(err) {
+          if (err) throw err;
+        });
+
+        res.json(JSON.parse(notesDump));
+    
+    } catch (err) {
+        throw err;
+        console.error(err);
+    }
 });
 
-app.delete("/api/notes/:id", function(reg,res) {
-    res.sendFile(path.join(__dirname, "./develop/db/db.json"));
+
+app.delete("/api/notes/:id", function(req,res) {
+    try {
+        notesDump = fs.readFileSync("./develop/db/db.json", "utf8");
+        notesDump = JSON.parse(notesDump);
+        notesDump = notesDump.filter(function(note) {
+            return note.id != req.params.id;
+        });
+        notesDump = JSON.stringify(notesDump);
+
+        fs.writeFile("./develop/db/db.json", notesDump, "utf8", function(err) {
+          if (err) throw err;
+        });
+    
+        res.send(JSON.parse(notesDump));
+    
+    } catch (err) {
+        throw err;
+        console.log(err);
+    }
 });
 
 app.get("/notes", function(req, res) {
