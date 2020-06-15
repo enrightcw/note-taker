@@ -12,6 +12,7 @@ var PORT = process.env.PORT || 3000;
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "Develop/public")));
 
 //Add Code Here
 
@@ -23,9 +24,9 @@ let noteDump = [];
 app.get("/api/notes", function(req, res) {
     
     try{
-    noteDump = fs.readFileSync("./develop/db/db.json", 'utf8');
-    console.log("IT WORKED!")
-    noteDump = JSON.parse(noteDump);
+        noteDump = fs.readFileSync("./develop/db/db.json", 'utf8');
+        console.log("IT WORKED!")
+        noteDump = JSON.parse(noteDump);
     }
 
     catch (err){
