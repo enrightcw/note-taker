@@ -16,8 +16,6 @@ app.use(express.static(path.join(__dirname, "Develop/public")));
 
 //Add Code Here
 
-// fs.readFileSync("./db/db.json", 'utf8')
-
 let noteDump = [];
 
 // api call for all notes in the db.json file and sends the results as an array of objects.
@@ -25,7 +23,7 @@ let noteDump = [];
 app.get("/api/notes", function(req, res) {
     
     try{
-        noteDump = fs.readFileSync("./develop/db/db.json", 'utf8');
+        noteDump = fs.readFileSync("./Develop/db/db.json", 'utf8');
         noteDump = JSON.parse(noteDump);
     }
 
@@ -38,17 +36,15 @@ app.get("/api/notes", function(req, res) {
 
 app.post("/api/notes", function(req, res) {
     try {
-        notesDump = fs.readFileSync("./develop/db/db.json", "utf8");  
-
+        notesDump = fs.readFileSync("./Develop/db/db.json", "utf8");  
         notesDump = JSON.parse(notesDump);
-
         req.body.id = notesDump.length;
 
         notesDump.push(req.body); 
 
         notesDump = JSON.stringify(notesDump);
 
-        fs.writeFile("./develop/db/db.json", notesDump, "utf8", function(err) {
+        fs.writeFile("./Develop/db/db.json", notesDump, "utf8", function(err) {
           if (err) throw err;
         });
 
@@ -63,14 +59,14 @@ app.post("/api/notes", function(req, res) {
 
 app.delete("/api/notes/:id", function(req,res) {
     try {
-        notesDump = fs.readFileSync("./develop/db/db.json", "utf8");
+        notesDump = fs.readFileSync("./Develop/db/db.json", "utf8");
         notesDump = JSON.parse(notesDump);
         notesDump = notesDump.filter(function(note) {
             return note.id != req.params.id;
         });
         notesDump = JSON.stringify(notesDump);
 
-        fs.writeFile("./develop/db/db.json", notesDump, "utf8", function(err) {
+        fs.writeFile("./Develop/db/db.json", notesDump, "utf8", function(err) {
           if (err) throw err;
         });
     
@@ -83,12 +79,12 @@ app.delete("/api/notes/:id", function(req,res) {
 });
 
 app.get("/notes", function(req, res) {
-    res.sendFile(path.join(__dirname, "./develop/public/notes.html"))
+    res.sendFile(path.join(__dirname, "./Develop/public/notes.html"))
     
 });
 
 app.get("/*", function(req, res) {
-    res.sendFile(path.join(__dirname, "./develop/public/index.html"));
+    res.sendFile(path.join(__dirname, "./Develop/public/index.html"));
 });
 
 // Starts the server to begin listening
