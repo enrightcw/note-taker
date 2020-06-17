@@ -17,6 +17,7 @@ app.use(express.static(path.join(__dirname, "Develop/public")));
 //Add Code Here
 
 let noteDump = [];
+let counterID = 0;
 
 // api call for all notes in the db.json file and sends the results as an array of objects.
 
@@ -38,13 +39,14 @@ app.post("/api/notes", function(req, res) {
     try {
         notesDump = fs.readFileSync("./Develop/db/db.json", "utf8");  
         notesDump = JSON.parse(notesDump);
-        req.body.id = notesDump.length;
+        req.body.id = counterID;
+        counterID++;
 
         notesDump.push(req.body); 
 
         notesDump = JSON.stringify(notesDump);
 
-        fs.writeFile("./Develop/db/db.json", notesDump, "utf8", function(err) {
+        fs.writeFileSync("./Develop/db/db.json", notesDump, "utf8", function(err) {
           if (err) throw err;
         });
 
@@ -66,13 +68,11 @@ app.delete("/api/notes/:id", function(req,res) {
         });
         notesDump = JSON.stringify(notesDump);
 
-        fs.writeFile("./Develop/db/db.json", notesDump, "utf8", function(err) {
-          if (err) throw err;
-        });
+        fs.writeFileSync("./Develop/db/db.json", notesDump, "utf8");
     
         res.send(JSON.parse(notesDump));
     
-    } catch (err) {
+    }   catch (err) {
         throw err;
         console.log(err);
     }
