@@ -37,20 +37,20 @@ app.get("/api/notes", function(req, res) {
 
 app.post("/api/notes", function(req, res) {
     try {
-        notesDump = fs.readFileSync("./Develop/db/db.json", "utf8");  
-        notesDump = JSON.parse(notesDump);
+        noteDump = fs.readFileSync("./Develop/db/db.json", "utf8");  
+        noteDump = JSON.parse(noteDump);
         req.body.id = counterID;
         counterID++;
 
-        notesDump.push(req.body); 
+        noteDump.push(req.body); 
 
-        notesDump = JSON.stringify(notesDump);
+        noteDump = JSON.stringify(noteDump);
 
-        fs.writeFileSync("./Develop/db/db.json", notesDump, "utf8", function(err) {
+        fs.writeFileSync("./Develop/db/db.json", noteDump, "utf8", function(err) {
           if (err) throw err;
         });
 
-        res.json(JSON.parse(notesDump));
+        res.json(JSON.parse(noteDump));
     
     } catch (err) {
         throw err;
@@ -61,16 +61,16 @@ app.post("/api/notes", function(req, res) {
 
 app.delete("/api/notes/:id", function(req,res) {
     try {
-        notesDump = fs.readFileSync("./Develop/db/db.json", "utf8");
-        notesDump = JSON.parse(notesDump);
-        notesDump = notesDump.filter(function(note) {
+        noteDump = fs.readFileSync("./Develop/db/db.json", "utf8");
+        noteDump = JSON.parse(noteDump);
+        noteDump = noteDump.filter(function(note) {
             return note.id != req.params.id;
         });
-        notesDump = JSON.stringify(notesDump);
+        noteDump = JSON.stringify(noteDump);
 
-        fs.writeFileSync("./Develop/db/db.json", notesDump, "utf8");
+        fs.writeFileSync("./Develop/db/db.json", noteDump, "utf8");
     
-        res.send(JSON.parse(notesDump));
+        res.send(JSON.parse(noteDump));
     
     }   catch (err) {
         throw err;
