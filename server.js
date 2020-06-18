@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "Develop/public")));
 
-//Add Code Here
+//Initalize variables for moving the notes out of the DB and into an array of objects, and a counter to assign and increment the ID for the new notes.
 
 let noteDump = [];
 let counterID = 0;
@@ -35,6 +35,7 @@ app.get("/api/notes", function(req, res) {
     res.json(noteDump);
 });
 
+// api call to create a new note from the user input on the page, assigns an ID and increments the counter so that we don't get the same ID twice.
 app.post("/api/notes", function(req, res) {
     try {
         noteDump = fs.readFileSync("./Develop/db/db.json", "utf8");  
@@ -58,7 +59,7 @@ app.post("/api/notes", function(req, res) {
     }
 });
 
-
+// api call to delete the note associated with the delete button clicked by the end-user.
 app.delete("/api/notes/:id", function(req,res) {
     try {
         noteDump = fs.readFileSync("./Develop/db/db.json", "utf8");
@@ -78,11 +79,13 @@ app.delete("/api/notes/:id", function(req,res) {
     }
 });
 
+//displays the notes.html page
 app.get("/notes", function(req, res) {
     res.sendFile(path.join(__dirname, "./Develop/public/notes.html"))
     
 });
 
+//sends the user to the home page for any URL that isn't "notes"
 app.get("/*", function(req, res) {
     res.sendFile(path.join(__dirname, "./Develop/public/index.html"));
 });
